@@ -1,0 +1,14 @@
+45174
+
+Set-ExecutionPolicy RemoteSigned
+
+$userCredential = Get-Credential
+
+Import-PSSession $Session
+
+Get-Mailbox -ResultSize unlimited
+
+
+=========================================================
+
+get-aduser -filter * -properties displayname,emailaddress | select-object displayname,emailaddress,enabled | where-object {$_.enabled -eq $True}

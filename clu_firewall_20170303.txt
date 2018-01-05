@@ -1,0 +1,14 @@
+45061
+
+netsh advfirewall set  allprofiles state off
+
+netsh advfirewall firewall set rule "Failover Clusters (UDP-In)" new enable=no
+
+
+changes:
+
+
+admin tools>local security policy>network>unidentified network>set private>location change=no.
+
+
+

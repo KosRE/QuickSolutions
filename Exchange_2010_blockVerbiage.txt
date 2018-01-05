@@ -1,0 +1,6 @@
+$Configuration = Get-SenderFilterConfig
+$Configuration.BlockedSenders += "alina@wbnic.org.cn"
+$Configuration.BlockedDomains += "wbnic.org.cn"
+$Configuration.BlockedDomainsAndSubdomains += "wbnic.org.cn"
+Set-SenderFilterConfig -BlockedSenders $Configuration.BlockedSenders -BlockedDomains $Configuration.BlockedDomains
+

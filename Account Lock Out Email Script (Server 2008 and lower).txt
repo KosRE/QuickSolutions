@@ -1,0 +1,18 @@
+$AccountLockOutEvent=Get-EventLog -LogName "Security" -InstanceID 4740 -Newest 1
+$LockedAccount = $($AccountLockOutEvent.ReplacementStrings[0])
+$AccountLockOutEventTime = $AccountLockOutEvent.TimeGenerated
+$AccountLockOutEventMessage = $AccountLockOutEvent.Message
+
+$MailFrom = "server@example.org"
+$MailTo = "admin@example.org"
+$SMTPServer = "server.local"
+$SMTPPort = "587"
+$Mailsubject = "Account Locked Out: $LockedAccount" 
+$Mailbody = "Account $LockedAccount was locked out on $AccountLockOutEventTime.`n`nEvent Details:`n`n$AccountLockOutEventMessage"
+
+$EmailMessage = New-Object System.Net.Mail.MailMessage($MailFrom , $MailTo)
+$emailMessage.Subject = $Mailsubject
+$emailMessage.Body = $Mailbody
+
+$SmtpClient = New-Object System.Net.Mail.SmtpClient($SMTPServer, $SMTPPort)
+$SmtpClient.Send($emailMessage)

@@ -1,0 +1,22 @@
+function global:FIND-HSGUSER {
+# Get name of File Server to Initialize Remoting 
+# and the name of the silly user you need to find their computer for   
+param($FILESERVER,$USERNAME)
+# Connect Remotely to Server, Run Session, get a list of everybody logged in there 
+
+    $S=NEW-PSSESSION –computername $FILESERVER 
+    $Results=(INVOKE-COMMAND –Session $s –scriptblock { (NET SESSION) }) | Select-string $USERNAME 
+    REMOVE-PSSESSION $S
+# Let’s parse through the data and pull out what we need   
+Foreach ( $Part in $RESULTS ) {
+    $ComputerIP=$Part.Line.substring(2,21).trim()
+    $User=$Part.Line.substring(22,44).trim()
+# Use nslookup to identify the computer, grab the line with the “Name:” field in it
+    $Computername=(nslookup $ComputerIP | Where { $_ -like ‘Name:’})
+    If ($Computername -eq $NULL) { $Computername=”Unknown”} 
+    Else { $Computername=$Computername.substring(9).trim()}
+    write-host 
+# Show me where the silly fool is hiding
+“$User is logged into $Computername with IP address $ComputerIP”
+}
+}

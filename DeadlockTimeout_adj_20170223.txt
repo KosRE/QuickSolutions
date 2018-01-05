@@ -1,0 +1,9 @@
+$cluster = get-cluster
+$cluster.CrossSubnetDelay = 4000 
+$cluster.CrossSubnetThreshold = 10 
+$cluster.SameSubnetDelay = 2000 
+$cluster.SameSubnetThreshold = 10 
+$cluster.RouteHistoryLength = 20 
+ 
+get-cluster | fl *Subnet*, RouteHistoryLength
+

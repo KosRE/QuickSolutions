@@ -1,0 +1,41 @@
+
+## Find SID Owner
+$objSID = New-Object System.Security.Principal.SecurityIdentifier `
+    ("S-1-5-18")
+$objUser = $objSID.Translate( [System.Security.Principal.NTAccount])
+$objUser.Value
+
+##Get User id +SID
+Get-ADuser *
+
+##Locate PDC Emulator
+(Get-ADDomain).PDCEmulator
+
+## Event hashtables
+
+Get-WinEvent -ComputerName <DC name here> -FilterHashtable @{logname='security';id=4740;userid='<SID here>'}
+
+Get-WinEvent -ComputerName <DC name here> -FilterHashtable @{logname='security';id=4740;userid='<SID here>'}
+
+Get-WinEvent -ComputerName <DC name here> -FilterHashtable @{logname='security';id=4740;userid='<SID here>'}
+
+
+Get-WinEvent -ComputerName <DC name here> -FilterHashtable @{logname='security';id=4740;data='*'} |
+Select-Object -Property timecreated,
+@{label='username';expression={$_.properties[0].value}},
+@{label='computername';expression={$_.properties[1].value}}
+
+Get-WinEvent -ComputerName <DC name here> -FilterHashtable @{logname='security';id=4740;data='*'} |
+Select-Object -Property timecreated,
+@{label='username';expression={$_.properties[0].value}},
+@{label='computername';expression={$_.properties[1].value}}
+
+Get-WinEvent -ComputerName <DC name here> -FilterHashtable @{logname='security';id=4740;data='*'} |
+Select-Object -Property timecreated,
+@{label='username';expression={$_.properties[0].value}},
+@{label='computername';expression={$_.properties[1].value}}
+
+Get-WinEvent -ComputerName <PDC name here> -FilterHashtable @{logname='security';id=4771} |
+Select-Object -Property timecreated,
+@{label='username';expression={$_.properties[0].value}},
+@{label='computername';expression={$_.properties[1].value}}
